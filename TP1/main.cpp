@@ -1,6 +1,8 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <glimac/Program.hpp>
+#include <glimac/FilePath.hpp>
 
 int window_width  = 800;
 int window_height = 800;
@@ -34,6 +36,8 @@ int main()
         return -1;
     }
 
+
+
     /* Create a window and its OpenGL context */
 #ifdef __APPLE__
     /* We need to explicitly ask for a 3.3 context on Mac */
@@ -63,20 +67,34 @@ int main()
     glfwSetCursorPosCallback(window, &cursor_position_callback);
     glfwSetWindowSizeCallback(window, &size_callback);
 
+    char * argv[100];
+    glimac::FilePath applicationPath(argv[0]);
+    //glimac::Program program = loadProgram(applicationPath.dirPath() + "shaders/triangle.vs.glsl",
+    //                            applicationPath.dirPath() + "shaders/triangle.fs.glsl");
+    glimac::Program  program = loadProgram(applicationPath.dirPath() + "../TP1/shaders/triangle.vs.glsl", 
+                                applicationPath.dirPath() + "../TP1/shaders/triangle.fs.glsl");
+
     GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    GLfloat vertices[] = { -0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f };
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), vertices, GL_STATIC_DRAW);
+    //GLfloat vertices[] = { -0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f };
+    GLfloat vertices[] = { -0.5f, -0.5f, 1.f, 0.f, 0.f, // premier sommet
+        0.5f, -0.5f, 0.f, 1.f, 0.f, // deuxième sommet
+        0.0f, 0.5f, 0.f, 0.f, 1.f // troisième sommet
+    };
+    //ex1 : 6 * sizeof(float)
+    glBufferData(GL_ARRAY_BUFFER, 15 * sizeof(float), vertices, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     GLuint vao;
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-    const GLuint VERTEX_ATTR_POSITION = 0;
+    const GLuint VERTEX_ATTR_POSITION = 3;
+    const GLuint VERTEX_ATTR_COULEUR = 8;
     glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(VERTEX_ATTR_POSITION, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), 0);
+    glVertexAttribPointer(VERTEX_ATTR_COULEUR, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (const GLvoid*) (2 * sizeof(GLfloat)));
     glBindBuffer(0, vbo);
     glBindVertexArray(0);
 
