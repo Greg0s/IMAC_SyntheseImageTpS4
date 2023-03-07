@@ -20,7 +20,7 @@ public:
 
 int main(int argc, char **argv) {
   // Initialize SDL and open a window
-  SDLWindowManager windowManager(800, 600, "GLImac");
+  SDLWindowManager windowManager(800, 800, "GLImac");
 
   // Initialize glew for OpenGL3+ support
   GLenum glewInitError = glewInit();
@@ -110,8 +110,7 @@ int main(int argc, char **argv) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glDrawArrays(GL_TRIANGLES, 3, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glBindVertexArray(0);
 
