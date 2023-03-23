@@ -7,5 +7,6 @@ out vec3 vFragColor;
 
 void main() {
     vFragColor = aVertexColor;
-    gl_Position = vec4(aVertexPosition, 0, 1);
+    vec2 transform = vec2(2., 0.5);
+    gl_Position = vec4((aVertexPosition + 0.5) * transform, 0, 1);
 }
